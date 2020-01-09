@@ -41,8 +41,8 @@ modules:
           - PREFIX=$(FLATPAK_DEST)
         sources:
           - type: archive
-            url: "https://github.com/Winetricks/winetricks/archive/20190912.tar.gz"
-            sha256: acedd8aebe9a7fef4548ff8a47cc8ab7e6d13f6051c1b79d51cd4105e0f7fb9f
+            url: "https://github.com/Winetricks/winetricks/archive/20191224.tar.gz"
+            sha256: c1223bb90e76c468f15784a701696a184aaee802bc9c236797166dea33d0d0a2
         modules:
 
           - name: p7zip
