@@ -21,18 +21,19 @@ cleanup:
   - /share/man
 modules:
 
+  - "python3-setuptools-scm.json"
   - name: protontricks
     buildsystem: simple
     build-commands:
-      - python3 setup.py install --prefix=${FLATPAK_DEST} --root=/
+      - PYTHONPATH=${FLATPAK_DEST}/lib/python3.7/site-packages/ pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.3.1"
-        commit: db7f1abf7bcd8786836d8c03e25d539ccc8686ff
+        tag: "1.4"
+        commit: fc59bdf24fa0dbad0df91c455fc92a562459a053
     modules:
 
       - name: winetricks
