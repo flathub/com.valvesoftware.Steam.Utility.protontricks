@@ -22,6 +22,8 @@ cleanup:
 modules:
 
   - "python3-setuptools-scm.json"
+  - "vdf.json"
+
   - name: protontricks
     buildsystem: simple
     build-commands:
