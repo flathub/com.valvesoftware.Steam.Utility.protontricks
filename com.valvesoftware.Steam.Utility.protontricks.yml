@@ -32,8 +32,8 @@ modules:
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.4.1"
-        commit: 5917de239a82ce95758c23eb150af92bfe15679a
+        tag: "1.4.2"
+        commit: 4957f0c7a2e26314014b1bd6c409174786f65e15
     modules:
 
       - name: winetricks
