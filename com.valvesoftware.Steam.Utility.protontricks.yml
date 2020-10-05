@@ -3,7 +3,7 @@ id: com.valvesoftware.Steam.Utility.protontricks
 branch: stable
 runtime: com.valvesoftware.Steam
 runtime-version: stable
-sdk: org.freedesktop.Sdk//19.08
+sdk: org.freedesktop.Sdk//20.08
 build-extension: true
 appstream-compose: false
 build-options:
@@ -11,6 +11,8 @@ build-options:
   prepend-path: /app/utils/protontricks/bin
   prepend-pkg-config-path: /app/utils/protontricks/lib/pkgconfig
   prepend-ld-library-path: /app/utils/protontricks/lib
+  env:
+    PYTHONPATH: /app/utils/protontricks/lib/python3.8/site-packages
   strip: true
 cleanup:
   - "*.a"
@@ -27,7 +29,7 @@ modules:
   - name: protontricks
     buildsystem: simple
     build-commands:
-      - PYTHONPATH=${FLATPAK_DEST}/lib/python3.7/site-packages/ pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
+      - pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
@@ -66,6 +68,9 @@ modules:
               - type: archive
                 url: "https://downloads.sourceforge.net/p7zip/p7zip_16.02_src_all.tar.bz2"
                 sha256: 5eb20ac0e2944f6cb9c2d51dd6c4518941c185347d4089ea89087ffdd6e2341f
+              - type: patch
+                paths:
+                  - patches/p7zip/gcc10-conversion.patch
               - type: shell
                 only-arches:
                   - "x86_64"
