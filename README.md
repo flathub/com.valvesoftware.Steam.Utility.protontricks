@@ -16,7 +16,7 @@ flatpak install flathub com.valvesoftware.Steam.Utility.protontricks
 Add an alias that allows you to call protontricks using the `protontricks-flat` alias:
 
 ```sh
-echo "alias protontricks-flat='flatpak run --command=protontricks com.valvesoftware.Steam --no-runtime'" >> ~/.bashrc
+echo "alias protontricks-flat='flatpak run --command=protontricks com.valvesoftware.Steam" >> ~/.bashrc
 ```
 
 **You will need to restart any terminal emulators you have open for the alias to take effect.**
