@@ -29,14 +29,26 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
+    build-options:
+      env:
+        # Override setuptools-scm version detection logic.
+        # This is necessary because of the Flatpak specific patch.
+        SETUPTOOLS_SCM_PRETEND_VERSION: "1.5.0"
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.4.4"
-        commit: e997181953c4573043670f44e5b917c477d06b08
+        # TODO: Use 'tag' parameter again once the new version of Protontricks
+        # is released. The actual release commit missed a change to the
+        # metadata XML file in the original repo, which was fixed in the very
+        # next commit.
+        commit: 30490608f3ad8e1494bfbad87fbba12cc132d1d1
+      - type: patch
+        paths:
+          - patches/protontricks/disable-bwrap.patch
+
     modules:
 
       - name: winetricks
