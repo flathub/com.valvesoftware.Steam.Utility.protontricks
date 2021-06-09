@@ -35,8 +35,8 @@ modules:
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.5.1"
-        commit: 2c60a0401420728c8b2952d98d7dbc1a0c6196f3
+        tag: "1.5.2"
+        commit: 9379d1bed2961e34a8b71aaa4e87804e9a65e8dc
 
     modules:
 
