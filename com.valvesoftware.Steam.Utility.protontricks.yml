@@ -29,14 +29,28 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
+      # Normal Protontricks relies on host system having the `wine` icon, but
+      # with Flatpak we have to ship one manually.
+      # The included one is from KDE's Breeze Icons icon theme set.
+      - mv ${FLATPAK_DEST}/share/applications/protontricks.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - mv ${FLATPAK_DEST}/share/applications/protontricks-launch.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.Launcher.desktop
+      - sed -i 's|Icon=.*|Icon=com.valvesoftware.Steam.Utility.protontricks|g' ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - sed -i 's|Icon=.*|Icon=com.valvesoftware.Steam.Utility.protontricks|g' ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.Launcher.desktop
+      - install -Dm 644 com.valvesoftware.Steam.Utility.protontricks.svg ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps
+      # `protontricks-desktop-install` is a post-install script intended for
+      # alternate installation environments where .desktop files can't
+      # be installed reliably. It's not required here.
+      - rm ${FLATPAK_DEST}/bin/protontricks-desktop-install
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.5.2"
-        commit: 9379d1bed2961e34a8b71aaa4e87804e9a65e8dc
+        #tag: "1.5.2"
+        commit: 5955b1750974921b14166a296d3d57006b66fb44
+      - type: file
+        path: "com.valvesoftware.Steam.Utility.protontricks.svg"
 
     modules:
 

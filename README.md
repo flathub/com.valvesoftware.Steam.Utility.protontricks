@@ -3,6 +3,8 @@ protontricks for Flatpak
 
 [protontricks](https://github.com/Matoking/protontricks) compatible with the Flatpak version of Steam.
 
+The application icon is provided by [Breeze Icons](https://github.com/KDE/breeze-icons) licensed under LGPL 3.0.
+
 # Installation
 
 You can install protontricks for Flatpak from the Flathub repository. You need to have Flatpak installed with the Flathub repository configured. For installing Flatpak and configuring Flathub, see the [official installation instructions](https://flatpak.org/setup/).
