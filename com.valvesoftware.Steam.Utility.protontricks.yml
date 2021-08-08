@@ -29,16 +29,37 @@ modules:
     buildsystem: simple
     build-commands:
       - pip3 install --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} .
+      # 'protontricks-desktop-install' does not work inside a Flatpak sandbox,
+      # and shouldn't be shipped anyway as long as desktop file installation
+      # can be handled elsewhere.
+      - rm ${FLATPAK_DEST}/bin/protontricks-desktop-install
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.5.2"
-        commit: 9379d1bed2961e34a8b71aaa4e87804e9a65e8dc
+        tag: "1.6.0"
+        commit: e3921f357b6977115905cf9f3283284a5e01cea0
 
     modules:
+
+      - name: yad
+        config-opts:
+          - "--enable-standalone"
+        sources:
+          - type: archive
+            url: "https://github.com/v1cont/yad/releases/download/v10.1/yad-10.1.tar.xz"
+            sha256: 742a5bd55de4b249eee6780bddeccb05c7ff4b158fd9743808f7d280219fd3ab
+        modules:
+
+          - name: intltool
+            cleanup:
+              - "*"
+            sources:
+              - type: archive
+                url: "https://launchpad.net/intltool/trunk/0.51.0/+download/intltool-0.51.0.tar.gz"
+                sha256: 67c74d94196b153b774ab9f89b2fa6c6ba79352407037c8c14d5aeb334e959cd
 
       - name: winetricks
         no-autogen: true
