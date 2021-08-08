@@ -1,18 +1,52 @@
 ---
-id: com.valvesoftware.Steam.Utility.protontricks
-branch: stable
-runtime: com.valvesoftware.Steam
-runtime-version: stable
-sdk: org.freedesktop.Sdk//20.08
-build-extension: true
+id: com.github.Matoking.protontricks
+runtime: org.freedesktop.Platform
+runtime-version: "20.08"
+sdk: org.freedesktop.Sdk
 appstream-compose: false
-build-options:
-  prefix: /app/utils/protontricks
-  prepend-path: /app/utils/protontricks/bin
-  prepend-pkg-config-path: /app/utils/protontricks/lib/pkgconfig
-  prepend-ld-library-path: /app/utils/protontricks/lib
-  env:
-    PYTHONPATH: /app/utils/protontricks/lib/python3.8/site-packages
+command: protontricks
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=all
+  - --allow=devel
+  - --allow=multiarch
+  - --share=network
+  - --env=STEAM_EXTRA_COMPAT_TOOLS_PATHS=/app/share/steam/compatibilitytools.d
+  - --filesystem=~/.var/app/com.valvesoftware.Steam
+  - --filesystem=xdg-data/Steam
+
+add-extensions:
+  org.freedesktop.Platform.Compat.i386:
+    directory: lib/i386-linux-gnu
+    version: '20.08'
+
+  org.freedesktop.Platform.Compat.i386.Debug:
+    directory: lib/debug/lib/i386-linux-gnu
+    version: '20.08'
+    no-autodownload: true
+
+  org.freedesktop.Platform.GL32:
+    directory: lib/i386-linux-gnu/GL
+    version: '1.4'
+    versions: 20.08;1.4
+    subdirectories: true
+    no-autodownload: true
+    autodelete: false
+    add-ld-path: lib
+    merge-dirs: vulkan/icd.d;glvnd/egl_vendor.d;OpenCL/vendors;lib/dri;lib/d3d;vulkan/explicit_layer.d;vulkan/implicit_layer.d
+    download-if: active-gl-driver
+    enable-if: active-gl-driver
+
+  com.valvesoftware.Steam.CompatibilityTool:
+    subdirectories: true
+    directory: share/steam/compatibilitytools.d
+    version: stable
+    versions: stable;beta;test
+    no-autodownload: true
+    autodelete: true
+
 cleanup:
   - "*.a"
   - "*.la"
@@ -36,11 +70,17 @@ modules:
     post-install:
       - install -Dm644 -t ${FLATPAK_DEST}/share/metainfo data/${FLATPAK_ID}.metainfo.xml
       - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
+      - rename protontricks ${FLATPAK_ID} ${FLATPAK_DEST}/share/applications/protontricks*.desktop
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
         tag: "1.6.0"
         commit: e3921f357b6977115905cf9f3283284a5e01cea0
+      - type: patch
+        use-git: true
+        paths:
+          - patches/protontricks/0001-Change-appstream-ID-to-be-an-application.patch
+          - patches/protontricks/0002-Add-path-to-Steam-flatpak-app-data-dir.patch
 
     modules:
 
@@ -181,3 +221,16 @@ modules:
                   - "exec ./configure.gnu $@"
             post-install:
               - "find ${FLATPAK_DEST}/lib/perl5 -type f -exec chmod u+w {} \\;"
+
+  - name: bundle-setup
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/steam/compatibilitytools.d
+      - mkdir -p /app/lib/i386-linux-gnu
+      - mkdir -p /app/lib/debug/lib/i386-linux-gnu
+      - mkdir -p /app/lib/i386-linux-gnu/GL
+      - install -Dm644 ld.so.conf /app/etc/ld.so.conf
+    sources:
+      - type: file
+        dest-filename: ld.so.conf
+        url: data:/app/lib32%0A/app/lib/i386-linux-gnu%0A

@@ -1,0 +1,26 @@
+From c168da70efc19295936a84ca5e2893a8669af72e Mon Sep 17 00:00:00 2001
+From: gasinvein <gasinvein@gmail.com>
+Date: Sun, 8 Aug 2021 20:46:21 +0300
+Subject: [PATCH 2/2] Add path to Steam flatpak app data dir
+
+---
+ src/protontricks/steam.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/protontricks/steam.py b/src/protontricks/steam.py
+index e898caf..10f8d8a 100644
+--- a/src/protontricks/steam.py
++++ b/src/protontricks/steam.py
+@@ -22,7 +22,8 @@ __all__ = (
+ 
+ COMMON_STEAM_DIRS = [
+     ".steam/steam",
+-    ".local/share/Steam"
++    ".local/share/Steam",
++    ".var/app/com.valvesoftware.Steam/data/Steam"
+ ]
+ 
+ logger = logging.getLogger("protontricks")
+-- 
+2.31.1
+
