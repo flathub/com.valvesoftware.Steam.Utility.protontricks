@@ -6,14 +6,65 @@ sdk: org.freedesktop.Sdk
 appstream-compose: false
 command: protontricks
 finish-args:
+  # These are copied from Steam Flatpak to keep permissions similar
+  # to what Proton running under Steam Flatpak normally uses.
   - --share=ipc
-  - --socket=x11
   - --socket=wayland
-  - --device=all
-  - --allow=devel
-  - --allow=multiarch
+  - --socket=x11
+  - --socket=pulseaudio
   - --share=network
+  - --talk-name=org.gnome.SettingsDaemon.MediaKeys
+  # Steam in -steamos mode uses Network Manager for network settings, e.g.
+  # connecting to wifi and so on.
+  # In normal mode, it probably just gets info about current connection status.
+  - --system-talk-name=org.freedesktop.NetworkManager
+  # Wine uses UDisks2 to enumerate disk drives
+  - --system-talk-name=org.freedesktop.UDisks2
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --system-talk-name=org.freedesktop.UPower
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.freedesktop.PowerManagement
+  - --talk-name=org.freedesktop.Notifications
+  - --filesystem=xdg-music:ro
+  - --filesystem=xdg-pictures:ro
+  - --filesystem=xdg-run/app/com.discordapp.Discord:create
+  - --device=all
+  - --allow=multiarch
+  - --allow=devel
+  - --allow=bluetooth
+  - --allow=per-app-dev-shm
+  - --persist=.
+  - --env=TZ=
+  - --unset-env=TZ
+  - --env=LC_ADDRESS=C
+  - --env=LC_COLLATE=C
+  - --env=LC_MONETARY=C
+  - --env=LC_MEASUREMENT=C
+  - --env=LC_NAME=C
+  - --env=LC_NUMERIC=C
+  - --env=LC_TELEPHONE=C
+  - --env=ALSA_CONFIG_PATH=
+  - --unset-env=ALSA_CONFIG_PATH
+  - --env=MESA_GLSL_CACHE_DIR=
+  - --unset-env=MESA_GLSL_CACHE_DIR
+  - --env=STEAM_RUNTIME_PREFER_HOST_LIBRARIES=
+  - --unset-env=STEAM_RUNTIME_PREFER_HOST_LIBRARIES
+  - --env=STEAM_RUNTIME=
+  - --unset-env=STEAM_RUNTIME
+  - --env=FLATPAK_STEAM_XDG_DIRS_PREFIX=~/.var/app/com.valvesoftware.Steam
+  - --env=FLATPAK_STEAM_UPDATE_SYMLINKS=0
+  - --env=SDL_VIDEODRIVER=
+  - --unset-env=SDL_VIDEODRIVER
+  - --env=DBUS_FATAL_WARNINGS=0
+  - --env=SSL_CERT_DIR=/etc/ssl/certs
   - --env=STEAM_EXTRA_COMPAT_TOOLS_PATHS=/app/share/steam/compatibilitytools.d
+  - --env=PATH=/app/bin:/app/utils/bin:/usr/bin
+  - --env=PYTHONPATH=/app/utils/lib/python3.8/site-packages
+  - --env=PROTON_DEBUG_DIR=/var/tmp
+  - --env=XDG_CONFIG_DIRS=/etc/xdg:/usr/lib/x86_64-linux-gnu/GL:/usr/lib/i386-linux-gnu/GL
+  - --env=GST_PLUGIN_SYSTEM_PATH=/app/lib/gstreamer-1.0:/app/lib32/gstreamer-1.0:/usr/lib/extensions/gstreamer-1.0:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:/usr/lib/i386-linux-gnu/gstreamer-1.0
+  - --require-version=1.0.0
+  # Grant access to Steam installation
   - --filesystem=~/.var/app/com.valvesoftware.Steam
   - --filesystem=xdg-data/Steam
 
