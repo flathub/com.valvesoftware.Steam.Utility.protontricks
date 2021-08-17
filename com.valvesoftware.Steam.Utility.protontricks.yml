@@ -74,13 +74,11 @@ modules:
     sources:
       - type: git
         url: "https://github.com/Matoking/protontricks.git"
-        tag: "1.6.0"
-        commit: e3921f357b6977115905cf9f3283284a5e01cea0
-      - type: patch
-        use-git: true
-        paths:
-          - patches/protontricks/0001-Change-appstream-ID-to-be-an-application.patch
-          - patches/protontricks/0002-Add-path-to-Steam-flatpak-app-data-dir.patch
+        # Fetch specific commit consisting of 1.6.0 and additional changes
+        # to enable the standalone Flatpak.
+        # These will be included in the next upstream release.
+        #tag: "1.6.0"
+        commit: 114a56611641bf92f1c34f20de2d992e20f5e1e7
 
     modules:
 
