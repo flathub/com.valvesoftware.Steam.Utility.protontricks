@@ -2,5 +2,7 @@
     "only-arches": [
         "x86_64"
     ],
-    "skip-icons-check": true
+    "skip-icons-check": true,
+    "end-of-life": "This application has been renamed to com.github.Matoking.protontricks",
+    "end-of-life-rebase": "com.github.Matoking.protontricks"
 }
